@@ -1,0 +1,82 @@
+{
+  "liked_video_ids": [
+    "pdIntro0001",
+    "pdGroup0003",
+    "pdMerge0004",
+    "npBasic0008",
+    "pyFunc00011",
+    "ppTips00023",
+    "sdStart0026",
+    "sdXHydr0027"
+  ],
+  "subscriptions": [
+    {
+      "channel_id": "UCSynthDataDojo0000000AA",
+      "title": "Data Dojo",
+      "description": "Python data analysis",
+      "subscribed_at": "2025-03-14T09:00:00Z"
+    },
+    {
+      "channel_id": "UCSynthCrumbLab0000000AA",
+      "title": "Crumb Lab",
+      "description": "Sourdough baking",
+      "subscribed_at": "2025-07-02T09:00:00Z"
+    },
+    {
+      "channel_id": "UCSynthPandasProTips00AA",
+      "title": "Pandas Pro Tips",
+      "description": "Advanced pandas",
+      "subscribed_at": "2025-11-05T09:00:00Z"
+    },
+    {
+      "channel_id": "UCSynthNightSkyNotes00AA",
+      "title": "Night Sky Notes",
+      "description": "Amateur astronomy",
+      "subscribed_at": "2026-01-20T09:00:00Z"
+    }
+  ],
+  "playlists": [
+    {
+      "playlist_id": "PLsynthLearningPython00000000000001",
+      "title": "Learning Python",
+      "items": [
+        {
+          "video_id": "pyTest00012",
+          "title": "Testing Python Code with Pytest",
+          "added_at": "2026-02-03T10:00:00Z",
+          "video_published_at": "2025-01-25T15:00:00Z"
+        },
+        {
+          "video_id": "pdClean0002",
+          "title": "Data Cleaning with Pandas: Missing Values and Duplicates",
+          "added_at": "2026-02-10T10:00:00Z",
+          "video_published_at": "2025-02-14T15:00:00Z"
+        },
+        {
+          "video_id": "pyPkg000013",
+          "title": "Packaging Python Projects",
+          "added_at": null,
+          "video_published_at": "2025-06-06T15:00:00Z"
+        }
+      ]
+    },
+    {
+      "playlist_id": "PLsynthWeekendBaking000000000000002",
+      "title": "Weekend Baking",
+      "items": [
+        {
+          "video_id": "sdXFerm0028",
+          "title": "Bulk Fermentation Explained",
+          "added_at": "2025-09-12T10:00:00Z",
+          "video_published_at": "2025-02-02T15:00:00Z"
+        },
+        {
+          "video_id": "btXBagel031",
+          "title": "Homemade Bagels Step by Step",
+          "added_at": "2025-10-01T10:00:00Z",
+          "video_published_at": "2025-01-19T15:00:00Z"
+        }
+      ]
+    }
+  ]
+}

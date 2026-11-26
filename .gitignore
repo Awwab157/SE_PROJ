@@ -1,0 +1,32 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+build/
+dist/
+.pytest_cache/
+.ruff_cache/
+
+# Secrets and local state (never commit)
+*.db
+*.db-journal
+*.db-wal
+*.db-shm
+client_secret*.json
+token*
+!tests/**/test_token*.py
+.env
+.env.*
+*.key
+*.enc
+
+# Editors / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Obsidian workspace state (notes are committed, UI state is not)
+brain/.obsidian/workspace*.json

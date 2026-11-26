@@ -1,0 +1,27 @@
+# Quota cost table (FR-6.1). Daily buckets reset at midnight America/Los_Angeles (FR-6).
+# Every value is configurable; adjust to match the "Quotas" page of your Google Cloud project.
+#
+# A workflow is rejected before its first API call if any bucket would exceed its limit (FR-6.4).
+
+timezone: America/Los_Angeles
+
+buckets:
+  # Number of search.list calls per day. Each page of results is a separate call.
+  search_calls: 100
+  # Standard YouTube Data API v3 quota units per day.
+  units: 10000
+
+# Cost per API call, per bucket. Buckets not listed for a method cost 0.
+# search.list is charged in both buckets. The units value is the documented legacy cost of 100,
+# which is the conservative choice (see docs/adr/0003-quota-reservation.md, TBD: confirm against
+# your project's quota page).
+costs:
+  search.list: {search_calls: 1, units: 100}
+  videos.list: {units: 1}
+  channels.list: {units: 1}
+  playlists.list: {units: 1}
+  playlistItems.list: {units: 1}
+  subscriptions.list: {units: 1}
+  videoCategories.list: {units: 1}
+  playlists.insert: {units: 50}
+  playlistItems.insert: {units: 50}

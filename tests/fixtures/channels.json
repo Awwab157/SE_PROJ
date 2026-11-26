@@ -1,0 +1,186 @@
+[
+  {
+    "kind": "youtube#channel",
+    "id": "UCSynthDataDojo0000000AA",
+    "snippet": {
+      "title": "Data Dojo",
+      "description": "Practical Python data analysis tutorials: pandas, numpy, data cleaning and visualisation.",
+      "customUrl": "@datadojo",
+      "defaultLanguage": "en"
+    },
+    "statistics": {
+      "subscriberCount": "120000",
+      "hiddenSubscriberCount": false,
+      "videoCount": "40"
+    },
+    "contentDetails": {
+      "relatedPlaylists": {
+        "uploads": "UUSynthDataDojo0000000AA"
+      }
+    },
+    "_username": "datadojo"
+  },
+  {
+    "kind": "youtube#channel",
+    "id": "UCSynthCodeGarden00000AA",
+    "snippet": {
+      "title": "Code Garden",
+      "description": "Python programming for beginners and beyond: functions, testing and packaging.",
+      "customUrl": "@codegarden",
+      "defaultLanguage": "en"
+    },
+    "statistics": {
+      "subscriberCount": "45000",
+      "hiddenSubscriberCount": false,
+      "videoCount": "40"
+    },
+    "contentDetails": {
+      "relatedPlaylists": {
+        "uploads": "UUSynthCodeGarden00000AA"
+      }
+    },
+    "_username": "codegarden"
+  },
+  {
+    "kind": "youtube#channel",
+    "id": "UCSynthProgramaFacil00AA",
+    "snippet": {
+      "title": "Programa Fácil",
+      "description": "Tutoriales de Python y pandas en español.",
+      "customUrl": "@programafacil",
+      "defaultLanguage": "es"
+    },
+    "statistics": {
+      "subscriberCount": "30000",
+      "hiddenSubscriberCount": false,
+      "videoCount": "40"
+    },
+    "contentDetails": {
+      "relatedPlaylists": {
+        "uploads": "UUSynthProgramaFacil00AA"
+      }
+    }
+  },
+  {
+    "kind": "youtube#channel",
+    "id": "UCSynthPandasProTips00AA",
+    "snippet": {
+      "title": "Pandas Pro Tips",
+      "description": "Advanced pandas and python data analysis tricks and performance.",
+      "customUrl": "@pandasprotips",
+      "defaultLanguage": "en"
+    },
+    "statistics": {
+      "subscriberCount": "9000",
+      "hiddenSubscriberCount": false,
+      "videoCount": "40"
+    },
+    "contentDetails": {
+      "relatedPlaylists": {
+        "uploads": "UUSynthPandasProTips00AA"
+      }
+    }
+  },
+  {
+    "kind": "youtube#channel",
+    "id": "UCSynthCrumbLab0000000AA",
+    "snippet": {
+      "title": "Crumb Lab",
+      "description": "Sourdough bread baking science: starters, hydration, fermentation. Formerly breadlab.",
+      "customUrl": "@crumblab",
+      "defaultLanguage": "en"
+    },
+    "statistics": {
+      "subscriberCount": "80000",
+      "hiddenSubscriberCount": false,
+      "videoCount": "40"
+    },
+    "contentDetails": {
+      "relatedPlaylists": {
+        "uploads": "UUSynthCrumbLab0000000AA"
+      }
+    },
+    "_username": "crumblab"
+  },
+  {
+    "kind": "youtube#channel",
+    "id": "UCSynthBakeTheory00000AA",
+    "snippet": {
+      "title": "Bake Theory",
+      "description": "Bread baking techniques, sourdough and yeasted breads explained. A breadlab collective member.",
+      "customUrl": "@baketheory",
+      "defaultLanguage": "en"
+    },
+    "statistics": {
+      "hiddenSubscriberCount": true,
+      "videoCount": "40"
+    },
+    "contentDetails": {
+      "relatedPlaylists": {
+        "uploads": "UUSynthBakeTheory00000AA"
+      }
+    }
+  },
+  {
+    "kind": "youtube#channel",
+    "id": "UCSynthNightSkyNotes00AA",
+    "snippet": {
+      "title": "Night Sky Notes",
+      "description": "Amateur astronomy: telescopes, star charts, planets and deep sky observing.",
+      "customUrl": "@nightskynotes",
+      "defaultLanguage": "en"
+    },
+    "statistics": {
+      "subscriberCount": "60000",
+      "hiddenSubscriberCount": false,
+      "videoCount": "40"
+    },
+    "contentDetails": {
+      "relatedPlaylists": {
+        "uploads": "UUSynthNightSkyNotes00AA"
+      }
+    },
+    "_username": "nightskynotes"
+  },
+  {
+    "kind": "youtube#channel",
+    "id": "UCSynthGoneChannel0000AA",
+    "snippet": {
+      "title": "Gone Channel",
+      "description": "This channel was terminated.",
+      "customUrl": "@gonechannel",
+      "defaultLanguage": "en"
+    },
+    "statistics": {
+      "subscriberCount": "10",
+      "hiddenSubscriberCount": false,
+      "videoCount": "40"
+    },
+    "contentDetails": {
+      "relatedPlaylists": {
+        "uploads": "UUSynthGoneChannel0000AA"
+      }
+    },
+    "_terminated": true
+  },
+  {
+    "kind": "youtube#channel",
+    "id": "UCSynthSoloAstro000000AA",
+    "snippet": {
+      "title": "Solo Astro Diary",
+      "description": "Personal astronomy diary: comets and meteor showers.",
+      "customUrl": "@soloastrodiary",
+      "defaultLanguage": "en"
+    },
+    "statistics": {
+      "subscriberCount": "1200",
+      "hiddenSubscriberCount": false,
+      "videoCount": "40"
+    },
+    "contentDetails": {
+      "relatedPlaylists": {
+        "uploads": "UUSynthSoloAstro000000AA"
+      }
+    }
+  }
+]

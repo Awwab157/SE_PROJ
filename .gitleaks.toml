@@ -1,0 +1,9 @@
+title = "yt-intel-mcp gitleaks config"
+
+[extend]
+useDefault = true
+
+[allowlist]
+description = "Deliberately fake values used by redaction and security tests"
+regexes = ['''(?i)ya29\.fake[\w\-.]*''', '''(?i)1//0gfake\w*''', '''(?i)fake-(secret|refresh|client)[\w\-.]*''']
+paths = ['''\.venv/''']
