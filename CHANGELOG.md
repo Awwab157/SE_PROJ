@@ -20,4 +20,6 @@ All notable changes to this project are documented here. The format follows
 - Fixture provider and offline test suite (unit, integration, system, negative, security); scheduled live tests.
 - Agent Skills `video-to-playlist`, `local-check`, `brain-ingest`, `brain-refine`, `brain-query`.
 - Obsidian PARA vault with 12 research notes; CI validators for skills and notes; gitleaks secret scan.
+- Command-line tool `scripts/yt.py` (login, similar, channels, recommend, analyze, playlist, quota, logout) and
+  offline walkthrough `scripts/demo.py`.
 - Documentation: user guide, API reference (generated), architecture diagrams, ADRs, dev plan, traceability.

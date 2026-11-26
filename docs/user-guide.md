@@ -23,6 +23,45 @@ Use **one** Google Cloud project for the team (no extra projects).
 > **Testing mode expires sign-ins after 7 days.** When a tool returns `reauthorization_required`, call
 > `start_authorization` again.
 
+## Use it from the command line (no AI app needed)
+`scripts/yt.py` calls the same tools an AI client would. Run everything from the project folder in PowerShell
+(macOS/Linux: use `.venv/bin/python` and forward slashes).
+
+**Step 1 — Google Cloud setup (one time, about 10 minutes)** at https://console.cloud.google.com
+1. Top bar → project picker → **New project** → name it `yt-intel` → **Create**, then select it.
+2. **APIs & Services → Library** → search "YouTube Data API v3" → **Enable**.
+3. **APIs & Services → OAuth consent screen** → **External** → app name `yt-intel`, your email as support and developer
+   contact → save. Under **Audience / Test users** add your own Gmail address. Leave the status on *Testing*.
+4. **APIs & Services → Credentials → Create credentials → OAuth client ID** → application type **Desktop app** →
+   **Create** → **Download JSON**.
+5. Create the folder `C:\Users\<you>\.yt-intel-mcp\` and save the file there as `client_secret.json`.
+   Keep it outside the project folder and never commit it.
+
+**Step 2 — Log in** (again every 7 days while the app is in Testing mode)
+```powershell
+.venv\Scripts\python scripts\yt.py login
+```
+Your browser opens. Choose your account. On "Google hasn't verified this app" click **Continue** (it is your own app),
+then allow read-only access.
+
+**Step 3 — Find videos**
+```powershell
+.venv\Scripts\python scripts\yt.py similar https://www.youtube.com/watch?v=VIDEO_ID   # related videos + reasons
+.venv\Scripts\python scripts\yt.py channels @somehandle                                # similar channels
+.venv\Scripts\python scripts\yt.py recommend --max-min 20 --lang en                    # from your likes/subs/playlists
+.venv\Scripts\python scripts\yt.py analyze --period 2025 --compare 2024                # your engagement analysis
+.venv\Scripts\python scripts\yt.py playlist "sourdough baking" --total 60 --max 20 --lang en
+.venv\Scripts\python scripts\yt.py quota                                               # quota left today
+.venv\Scripts\python scripts\yt.py logout                                              # disconnect
+```
+`playlist` shows the proposal and asks "Create this playlist on YouTube? [y/N]". On yes, a page opens in your browser
+with a one-time code; type it in the terminal and the (private) playlist is created. The first time, Google asks for
+the extra "manage your YouTube account" permission. Add `--sample` before the command (e.g.
+`yt.py --sample similar pdIntro0001`) to try everything with offline sample data. `yt.py --help` lists all options.
+
+Each `similar` call uses about 3 of the 100 daily search calls; `quota` shows what is left (resets at midnight
+Pacific Time).
+
 ## 3. Configure your MCP client
 Environment variables:
 

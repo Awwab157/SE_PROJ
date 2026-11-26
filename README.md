@@ -29,6 +29,8 @@ python -m venv .venv && . .venv/bin/activate     # Windows: .venv\Scripts\activa
 pip install -e ".[dev]"
 python scripts/local_check.py                    # offline end-to-end check with fixture data
 ```
+Try it without any AI app: `python scripts/yt.py --sample similar pdIntro0001` (sample data) or, after the one-time
+Google setup, `python scripts/yt.py similar <video URL>` on real YouTube data.
 Connecting a real account and an MCP client: see [docs/user-guide.md](docs/user-guide.md).
 
 ## Documentation
