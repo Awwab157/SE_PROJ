@@ -16,6 +16,7 @@ Phase 1 deliverables exist: `pyproject.toml` (ruff, pytest), `.gitignore` for se
 ## Open items
 - Human review of the research notes' sources (one fact — the 1,000-like limit — is taken from the SRS and still marked "to verify").
 - Confirm the `search.list` unit cost for the team's Google Cloud project (see [[quota-management]]).
+- SRS not yet in the repository: the team adds it to `docs/`; then fill the TBD rows in `docs/traceability.md` (NFR-3, 4, 6-9, 12, 14, 16, 18, SK-7, BR-3..7, SB-5/6).
 
 ## Links
 - [[yt-intel-mcp-release-1]] · [[obsidian-para-second-brain]] · [[agent-skills-format]]
