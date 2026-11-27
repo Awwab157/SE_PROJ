@@ -1,10 +1,10 @@
 ---
-title: Stage review 3 — skills, tests and documentation
+title: Phase review 7–9 — skills, tests and documentation
 type: stage-review
 status: pending-human-review
 created: 2026-11-26
 ---
-# Stage review 3 — skills, tests and documentation
+# Phase review 7–9 — skills, tests and documentation
 
 ## Summary
 Phases 7–9: five Agent Skills, the full offline test suite (unit, integration, system, negative, security; live tests separated), benchmark, user guide, API reference, architecture diagrams, ADRs, dev plan, traceability matrix and changelog.

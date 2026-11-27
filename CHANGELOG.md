@@ -21,6 +21,11 @@ All notable changes to this project are documented here. The format follows
   publish date for the metadata-based summary (D-003, D-004).
 - MCP prompt `video-to-playlist` (argument `video`): the Agent Skill is exposed through the server; its text is
   `skills/video-to-playlist/SKILL.md` (SK-1.1).
+- System design document: `docs/architecture.md` (context, deployment, components, provider abstraction, MCP
+  surface, workflows, state machine, data model, similarity, quota, errors, security, tests, knowledge base) and
+  `docs/design.pdf` built by `scripts/build_design_pdf.py`.
+- Testing and CI: `docs/tests/test-plan.md` and `test-results.md`; six video-to-playlist evaluation scenarios as
+  MCP system tests; defect-log consistency test; CI coverage gate (85 %) and JUnit/coverage artifacts.
 - Redacting logs with per-tool timing; structured errors with cause and next step.
 - Fixture provider and offline test suite (unit, integration, system, negative, security); scheduled live tests.
 - Agent Skills `video-to-playlist`, `local-check`, `brain-ingest`, `brain-refine`, `brain-query`.

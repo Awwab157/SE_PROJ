@@ -34,7 +34,7 @@ Google setup, `python scripts/yt.py similar <video URL>` on real YouTube data.
 Connecting a real account and an MCP client: see [docs/user-guide.md](docs/user-guide.md).
 
 ## Documentation
-- [New computer setup](docs/new-machine-setup.md) · [User guide](docs/user-guide.md) · [API reference](docs/api.md) · [Architecture](docs/architecture.md)
+- [New computer setup](docs/new-machine-setup.md) · [User guide](docs/user-guide.md) · [API reference](docs/api.md) · [Architecture](docs/architecture.md) ([PDF](docs/design.pdf))
 - [ADRs](docs/adr/) · [Development plan](docs/dev-plan.md) · [Traceability](docs/traceability.md)
 - Contributor and AI-agent rules: [AGENTS.md](AGENTS.md) · Agent Skills: [skills/](skills/) · Team notes: [brain/index.md](brain/index.md)
 

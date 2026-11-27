@@ -1,10 +1,10 @@
 ---
-title: Stage review 2 — core infrastructure and features
+title: Phase review 2–6 — core infrastructure and features
 type: stage-review
 status: pending-human-review
 created: 2026-11-26
 ---
-# Stage review 2 — core infrastructure and features
+# Phase review 2–6 — core infrastructure and features
 
 ## Summary
 Phases 2–6: provider interface (live + fixture), ID and duration parsing, quota ledger with atomic reservation, cache, OAuth with PKCE, redacting logs, similarity engine, FR-1..FR-5 services, approval mechanism and the MCP surface (9 tools, 3 resources).

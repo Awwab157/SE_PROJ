@@ -32,7 +32,7 @@ Work proceeds phase by phase. After each phase: lint + tests, then **stop for hu
 | 6.2 | Verify with demo client | user guide config snippet | **pending** (needs team OAuth client + Claude Desktop) |
 | 7 | Agent Skills SK-1..SK-5 | `skills/` | done; evaluations pending (TQ-7) |
 | 8 | Tests TQ-1..TQ-9, benchmark | `tests/`, `scripts/benchmark.py` | done; live run pending secrets |
-| 9.1 | User guide, API reference, architecture, ADRs | `docs/` | done |
+| 9.1 | User guide, API reference, architecture, ADRs | `docs/` | done; full design (17 sections, 12 diagrams) in `docs/architecture.md` and `docs/design.pdf` (2026-11-27) |
 | 9.2 | Traceability, stage reviews, ai-session note | `docs/traceability.md`, `brain/projects/` | done |
 | 9.3 | CHANGELOG + tag `v1.0.0` | `CHANGELOG.md` | changelog done; **tag after review and green CI** |
 

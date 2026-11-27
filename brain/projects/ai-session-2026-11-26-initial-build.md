@@ -17,7 +17,7 @@ Build release 1.0 from `BUILD_PLAN_PROMPT.md` (phases 1–9) in one session.
 
 ## Human review
 - Required before merge (AGENTS.md): review every file, especially `services/playlist.py`, `approval.py`, `auth.py` and `quota.py`.
-- Verify the research notes' sources and the two open TBDs in [[stage-review-1-skeleton]].
+- Verify the research notes' sources and the two open TBDs in [[stage-review-1-requirements]].
 
 ## Links
-- [[yt-intel-mcp-release-1]] · [[stage-review-2-implementation]]
+- [[yt-intel-mcp-release-1]] · [[phase-review-implementation]]

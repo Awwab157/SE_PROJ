@@ -25,11 +25,13 @@ python -m venv .venv && . .venv/bin/activate      # Windows: .venv\Scripts\activ
 pip install -e ".[dev]"
 ruff check src tests scripts                      # lint
 pytest -q                                         # offline tests (fixture provider, no network)
+pytest -q --cov=yt_intel_mcp --cov-fail-under=85  # same with the CI coverage gate
 python scripts/validate_skills.py                 # SKILL.md format + links
 python scripts/validate_brain.py                  # brain notes + wikilinks
 python scripts/local_check.py                     # SK-2: build, test, start server, call a tool
 python scripts/benchmark.py                       # NFR-2 timings
 python scripts/gen_api_docs.py                    # regenerate docs/api.md after API changes
+python scripts/build_design_pdf.py                # rebuild docs/design.pdf after docs/architecture.md or ADR changes
 pytest -o addopts="" -m live tests/live           # live API (CI schedule only; needs secrets)
 ```
 

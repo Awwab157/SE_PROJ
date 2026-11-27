@@ -14,5 +14,6 @@ Build an MCP server (stdio, Python, official MCP SDK) that finds similar videos 
 - Definition of done: CI green, traceability complete, `local-check` passes on a team machine, live demo of FR-1..FR-5 and `video-to-playlist`.
 
 ## Links
-- [[stage-review-1-skeleton]] · [[stage-review-2-implementation]] · [[stage-review-3-skills-and-docs]]
+- Stages: [[stage-review-1-requirements]] · [[stage-review-2-design]] · [[stage-review-3-testing-ci]]
+- Build phases: [[phase-review-implementation]] · [[phase-review-skills-and-docs]]
 - [[youtube-data-api-v3]] · [[playlist-creation]] · [[quota-management]]
