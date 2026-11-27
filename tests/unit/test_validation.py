@@ -45,6 +45,21 @@ def test_propose_validation(override) -> None:
         ProposePlaylistInput(**{**OK_PROPOSAL, **override})
 
 
+@pytest.mark.parametrize(
+    "ids",
+    [[], ["not-an-id"], ["pdIntro0001", "https://youtu.be/pdIntro0001"], [f"abcdefgh{i:03d}" for i in range(51)]],
+)
+def test_propose_candidate_ids_rejected(ids) -> None:
+    with pytest.raises(ValidationError):
+        ProposePlaylistInput(**OK_PROPOSAL, candidate_video_ids=ids)
+
+
+def test_propose_candidate_ids_deduplicated_in_order() -> None:
+    inp = ProposePlaylistInput(**OK_PROPOSAL, candidate_video_ids=["pdGroup0003", "pdClean0002", "pdGroup0003"])
+    assert inp.candidate_video_ids == ["pdGroup0003", "pdClean0002"]
+    assert ProposePlaylistInput(**OK_PROPOSAL).candidate_video_ids is None
+
+
 def test_propose_valid_defaults_private() -> None:
     assert ProposePlaylistInput(**OK_PROPOSAL).privacy == "private"
     assert ProposePlaylistInput(**{**OK_PROPOSAL, "language": "DE"}).language == "de"

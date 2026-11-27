@@ -59,7 +59,7 @@ Test paths are relative to `tests/`. Notes are in `brain/resources/` unless stat
 ## Skills
 | Req | Summary | Issue | PR | Tests / artifact | Skill | Note |
 |---|---|---|---|---|---|---|
-| SK-1 | video-to-playlist | TBD | TBD | `scripts/validate_skills.py`; evaluation pending (`docs/tests/skill-evaluations.md`) | video-to-playlist | playlist-creation |
+| SK-1 | video-to-playlist | TBD | TBD | `system/test_mcp_end_to_end.py::test_video_to_playlist_chain`, `integration/test_services.py::test_seed_carries_metadata_for_summary`, `::test_propose_from_candidate*`, `scripts/validate_skills.py`; client evaluation pending (`docs/tests/skill-evaluations.md`) | video-to-playlist | playlist-creation |
 | SK-2 | local-check | TBD | TBD | `scripts/local_check.py` run recorded in skill evaluations | local-check | mcp |
 | SK-3 | brain-ingest | TBD | TBD | 12 research notes created with it; `scripts/validate_brain.py` | brain-ingest | obsidian-para-second-brain |
 | SK-4 | brain-refine | TBD | TBD | validator; evaluation pending | brain-refine | obsidian-para-second-brain |

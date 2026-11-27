@@ -16,6 +16,9 @@ All notable changes to this project are documented here. The format follows
   state machine that resumes instead of duplicating (FR-5).
 - Quota ledger with atomic per-bucket reservation and Pacific-time reset; 24 h / 7 d cache (FR-6).
 - Installed-app OAuth with PKCE, incremental write scope, keychain token storage and revocation (FR-7).
+- `propose_playlist` accepts optional `candidate_video_ids` so `video-to-playlist` builds the playlist from the
+  similar videos; `find_similar_videos` returns the seed's description, tags, duration, category, language and
+  publish date for the metadata-based summary (D-003, D-004).
 - Redacting logs with per-tool timing; structured errors with cause and next step.
 - Fixture provider and offline test suite (unit, integration, system, negative, security); scheduled live tests.
 - Agent Skills `video-to-playlist`, `local-check`, `brain-ingest`, `brain-refine`, `brain-query`.

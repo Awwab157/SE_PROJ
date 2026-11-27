@@ -7,10 +7,11 @@ from yt_intel_mcp.errors import NotFound
 from yt_intel_mcp.schemas import (
     FindSimilarChannelsInput,
     FindSimilarVideosInput,
+    ProposePlaylistInput,
     RecommendFilters,
     RecommendVideosInput,
 )
-from yt_intel_mcp.services import recommendations, similar_channels, similar_videos
+from yt_intel_mcp.services import playlist, recommendations, similar_channels, similar_videos
 from yt_intel_mcp.services.similar_videos import STOPPED_NOTE
 
 
@@ -152,3 +153,62 @@ def test_recommendation_filters(app) -> None:
     )
     assert all(r.duration_seconds is not None and r.duration_seconds <= 900 for r in res.results)
     assert all(r.language == "en" for r in res.results)
+
+
+# --- video-to-playlist skill support -------------------------------------------------------------------
+
+
+def test_seed_carries_metadata_for_summary(app, provider) -> None:
+    seed = sv(app, "pdIntro0001").seed
+    assert seed.description and len(seed.description) <= 500
+    assert seed.tags and seed.channel_id
+    assert seed.duration_seconds == 860
+    assert seed.category_id == "27" and seed.language == "en" and seed.published_at
+    assert provider.count("get_videos") >= 1  # same seed fetch, no extra call for the summary
+
+
+def test_propose_from_candidate_ids_uses_only_those_videos(app, provider) -> None:
+    candidates = [
+        "pdClean0002",  # eligible
+        "pdXAdv00007",  # 38 min > max 20
+        "esPandas020",  # Spanish
+        "pyPriv00016",  # private
+        "deletedVid1",  # not returned by the API
+        "pyNoLang017",  # language unknown
+        "pdGroup0003",  # eligible
+    ]
+    inp = ProposePlaylistInput(
+        topic="pandas data analysis",
+        total_duration_min=60,
+        max_video_duration_min=20,
+        language="en",
+        candidate_video_ids=candidates,
+    )
+    res = playlist.propose_playlist(app, inp)
+    assert res.status == "proposed" and res.source == "candidate_video_ids"
+    assert {i.video_id for i in res.items} == {"pdClean0002", "pdGroup0003"}
+    assert all(i.category_id == "27" for i in res.items)
+    assert res.excluded == {
+        "longer_than_max": 1,
+        "language_mismatch": 1,
+        "private_or_unavailable": 1,
+        "deleted_or_private": 1,
+        "unknown_language": 1,
+    }
+    assert provider.count("search_videos") == 0
+    assert res.quota_used.get("search_calls", 0) == 0
+    assert res.total_duration_seconds <= 3600
+    assert provider.write_calls == []
+
+
+def test_propose_from_candidates_without_eligible_videos(app) -> None:
+    inp = ProposePlaylistInput(
+        topic="pandas",
+        total_duration_min=60,
+        max_video_duration_min=20,
+        language="en",
+        candidate_video_ids=["esPandas020", "pdXAdv00007"],
+    )
+    res = playlist.propose_playlist(app, inp)
+    assert res.status == "no_candidates" and res.proposal_id is None
+    assert "without candidate_video_ids" in res.next_step

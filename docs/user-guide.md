@@ -102,8 +102,14 @@ consent page (read-only access). Approve it and return to the client.
 - "Recommend 10 videos under 15 minutes in English" → `recommend_videos`
 - "Analyse my likes, subscriptions and playlists for 2025 compared with 2024" → `analyze_engagement`
 - "Make a 60-minute playlist about sourdough baking, videos at most 20 minutes, English" → `propose_playlist`
-- "Turn this video into a playlist" → the `video-to-playlist` skill (`skills/video-to-playlist/SKILL.md`)
+- "Turn this video into a playlist" → the `video-to-playlist` skill (`skills/video-to-playlist/SKILL.md`): it
+  summarises the video from its metadata, finds similar videos and proposes a playlist built from *those* videos
+  (`propose_playlist` with `candidate_video_ids`)
 - "How much quota is left?" → resource `quota://status`
+
+Playlist requests are written in natural language. The assistant turns them into the structured constraints of
+`propose_playlist` (topic, total duration, maximum video length, language), and the proposal lists every constraint
+check so you can see how your request was read.
 
 Results only use video metadata and your likes, subscriptions and playlists. Summaries are metadata-based, not
 transcripts. Viewing history is not available through the API and is never used.

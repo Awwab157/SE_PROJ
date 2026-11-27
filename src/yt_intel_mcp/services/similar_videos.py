@@ -9,6 +9,7 @@ from yt_intel_mcp.errors import NotFound
 from yt_intel_mcp.ids import parse_video_id
 from yt_intel_mcp.providers.base import pages_for
 from yt_intel_mcp.schemas import (
+    SEED_DESCRIPTION_CHARS,
     FindSimilarVideosInput,
     FindSimilarVideosResult,
     SeedVideo,
@@ -76,8 +77,15 @@ def find_similar_videos(app: AppContext, inp: FindSimilarVideosInput) -> FindSim
         seed_out = SeedVideo(
             video_id=seed.video_id,
             title=seed.title,
+            channel_id=seed.channel_id,
             channel_title=seed.channel_title,
             url=seed.url,
+            description=(seed.description or "")[:SEED_DESCRIPTION_CHARS] or None,
+            tags=seed.tags[:20],
+            duration_seconds=seed.duration_seconds,
+            category_id=seed.category_id,
+            language=seed.language,
+            published_at=seed.published_at,
             unavailable_fields=seed.unavailable_fields,
         )
         notes: list[str] = []

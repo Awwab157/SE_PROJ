@@ -149,3 +149,35 @@ async def test_start_authorization_requests_read_scope_only(app, authorizer) -> 
         result = await client.call_tool("start_authorization", {})
     assert result.structured_content["status"] == "authorized"
     assert authorizer.requested_scopes == [["https://www.googleapis.com/auth/youtube.readonly"]]
+
+
+async def test_video_to_playlist_chain(app, provider) -> None:
+    """SK-1 video-to-playlist: summarise -> similar (FR-1) -> propose from those -> approve -> create."""
+    messages: list[str] = []
+    async with client_for(app, accept(messages)) as client:
+        similar = (
+            await client.call_tool("find_similar_videos", {"video": "https://youtu.be/pdIntro0001", "limit": 20})
+        ).structured_content
+        assert similar["seed"]["description"] and similar["seed"]["tags"]  # step 1 has data to summarise
+        similar_ids = [r["video_id"] for r in similar["results"]]
+        searches_before = provider.count("search_videos")
+        proposal = await client.call_tool(
+            "propose_playlist",
+            {
+                "topic": "pandas data analysis",
+                "total_duration_min": 60,
+                "max_video_duration_min": 20,
+                "language": "en",
+                "candidate_video_ids": similar_ids,
+            },
+        )
+        p = proposal.structured_content
+        assert not proposal.is_error, all_text(proposal)
+        assert p["source"] == "candidate_video_ids"
+        assert provider.count("search_videos") == searches_before
+        assert p["items"] and {i["video_id"] for i in p["items"]} <= set(similar_ids)
+        assert all(i["category_id"] for i in p["items"])  # step 5 analysis data
+        assert provider.write_calls == []
+        created = (await client.call_tool("create_playlist", {"proposal_id": p["proposal_id"]})).structured_content
+    assert created["status"] == "completed"
+    assert created["items_inserted"] == len(p["items"])

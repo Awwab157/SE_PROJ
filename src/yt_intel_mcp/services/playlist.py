@@ -345,7 +345,9 @@ def proposal_summary(p: Proposal, units: int | None = None) -> str:
 # ==================================================================================================
 
 
-def plan(app: AppContext) -> tuple[dict[str, int], dict[str, int]]:
+def plan(app: AppContext, from_candidates: bool = False) -> tuple[dict[str, int], dict[str, int]]:
+    if from_candidates:  # at most 50 IDs: one videos.list call, no search
+        return {"videos.list": 1}, {"videos.list": 1}
     pages = int(app.retrieval("playlist")["search_pages"])
     return {"search.list": pages, "videos.list": pages}, {"search.list": 1, "videos.list": 1}
 
@@ -355,10 +357,12 @@ def propose_playlist(app: AppContext, inp: ProposePlaylistInput) -> ProposePlayl
     target = int(round(inp.total_duration_min * 60))
     max_s = int(round(inp.max_video_duration_min * 60))
     min_s = int(round(inp.min_video_duration_min * 60)) if inp.min_video_duration_min else None
-    full, minimum = plan(app)
+    from_candidates = bool(inp.candidate_video_ids)
+    full, minimum = plan(app, from_candidates)
     store = ProposalStore(app.db, app.clock)
 
-    def work() -> ProposePlaylistResult:
+    def search_candidates(order: list[str], metas: dict[str, VideoMeta], excluded: Counter[str]) -> bool:
+        """Topic search. Returns True if it stopped early because the reserved quota was used up."""
         filters: dict[str, Any] = {
             "relevanceLanguage": inp.language,
             "maxResults": int(r["results_per_page"]),
@@ -369,15 +373,10 @@ def propose_playlist(app: AppContext, inp: ProposePlaylistInput) -> ProposePlayl
             filters["videoDuration"] = "long"
         elif min_s and min_s >= 240 and max_s <= 1200:
             filters["videoDuration"] = "medium"
-        order: list[str] = []
-        metas: dict[str, VideoMeta] = {}
-        excluded: Counter[str] = Counter()
-        notes_stop = False
         token: str | None = None
         for _ in range(int(r["search_pages"])):
             if not quota.can_afford("search.list", keep={"videos.list": 1}):
-                notes_stop = True
-                break
+                return True
             resp = app.provider.search_videos(inp.topic, filters, token)
             new_ids = []
             for item in resp.get("items", []):
@@ -388,8 +387,7 @@ def propose_playlist(app: AppContext, inp: ProposePlaylistInput) -> ProposePlayl
                 new_ids.append(item["video_id"])
             if new_ids:
                 if not quota.can_afford("videos.list"):
-                    notes_stop = True
-                    break
+                    return True
                 for raw in app.provider.get_videos(new_ids):
                     metas[raw["id"]] = video_from_api(raw)
             eligible_seconds = sum(
@@ -399,7 +397,21 @@ def propose_playlist(app: AppContext, inp: ProposePlaylistInput) -> ProposePlayl
             )
             token = resp.get("next_page_token")
             if not token or eligible_seconds >= 3 * target:
-                break
+                return False
+        return False
+
+    def work() -> ProposePlaylistResult:
+        order: list[str] = []
+        metas: dict[str, VideoMeta] = {}
+        excluded: Counter[str] = Counter()
+        notes_stop = False
+        if inp.candidate_video_ids:
+            # video-to-playlist: build from the given videos (e.g. FR-1 results), keeping their order as rank.
+            order = list(inp.candidate_video_ids)
+            for raw in app.provider.get_videos(order):
+                metas[raw["id"]] = video_from_api(raw)
+        else:
+            notes_stop = search_candidates(order, metas, excluded)
 
         unknown: Counter[str] = Counter()
         seen_titles: set[tuple[str, str]] = set()
@@ -438,6 +450,7 @@ def propose_playlist(app: AppContext, inp: ProposePlaylistInput) -> ProposePlayl
             int(r.get("max_items", 50)),
         )
         title = _clean_title(f"{inp.topic} — curated playlist")
+        source = "candidate_video_ids" if from_candidates else "topic_search"
         stop_note = " Search stopped early because the reserved quota was used up." if notes_stop else ""
         if not selected:
             return ProposePlaylistResult(
@@ -457,8 +470,14 @@ def propose_playlist(app: AppContext, inp: ProposePlaylistInput) -> ProposePlayl
                 shortfall_seconds=target,
                 estimated_write_quota={},
                 ordering_note=ORDERING_NOTE,
+                source=source,
                 expires_at=None,
-                next_step="Try a broader topic, a longer maximum video duration or another language.",
+                next_step=(
+                    "Call propose_playlist again without candidate_video_ids to search the topic instead, or "
+                    "relax the constraints."
+                    if from_candidates
+                    else "Try a broader topic, a longer maximum video duration or another language."
+                ),
             )
 
         ordered = order_intro_to_advanced(selected)
@@ -475,6 +494,7 @@ def propose_playlist(app: AppContext, inp: ProposePlaylistInput) -> ProposePlayl
                 duration_text=format_duration(c.seconds),
                 url=c.video.url,
                 level=level_of(c.video.title),
+                category_id=c.video.category_id,
             )
             for i, c in enumerate(ordered)
         ]
@@ -556,6 +576,7 @@ def propose_playlist(app: AppContext, inp: ProposePlaylistInput) -> ProposePlayl
             shortfall_seconds=shortfall,
             estimated_write_quota=write_quota,
             ordering_note=ORDERING_NOTE,
+            source=source,
             expires_at=proposal.expires_at.isoformat(),
             next_step=(
                 "Show this proposal to the user. Only if they want it, call create_playlist with this "

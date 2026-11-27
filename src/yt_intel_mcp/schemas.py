@@ -12,7 +12,7 @@ from typing import Any, Literal
 from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 
 from yt_intel_mcp.duration import parse_duration
-from yt_intel_mcp.ids import video_url
+from yt_intel_mcp.ids import VIDEO_ID_RE, video_url
 
 # ISO 639-1 two-letter codes (FR-5.1).
 ISO_639_1 = frozenset(
@@ -25,6 +25,8 @@ ISO_639_1 = frozenset(
 )
 
 PRIVACY = Literal["private", "unlisted", "public"]
+SEED_DESCRIPTION_CHARS = 500
+MAX_CANDIDATE_IDS = 50
 
 
 def primary_language(code: str | None) -> str | None:
@@ -202,6 +204,7 @@ class ProposePlaylistInput(_Strict):
     language: str
     min_video_duration_min: float | None = Field(default=None, gt=0, le=1440)
     privacy: PRIVACY = "private"
+    candidate_video_ids: list[str] | None = Field(default=None, min_length=1, max_length=MAX_CANDIDATE_IDS)
 
     @field_validator("language")
     @classmethod
@@ -210,6 +213,17 @@ class ProposePlaylistInput(_Strict):
         if value not in ISO_639_1:
             raise ValueError("language must be an ISO 639-1 code such as 'en' or 'de'")
         return value
+
+    @field_validator("candidate_video_ids")
+    @classmethod
+    def _candidates(cls, value: list[str] | None) -> list[str] | None:
+        if value is None:
+            return None
+        ids = [v.strip() for v in value]
+        bad = [v for v in ids if not VIDEO_ID_RE.match(v)]
+        if bad:
+            raise ValueError("candidate_video_ids must contain 11-character YouTube video IDs")
+        return list(dict.fromkeys(ids))
 
     @model_validator(mode="after")
     def _durations(self) -> ProposePlaylistInput:
@@ -270,10 +284,19 @@ class SimilarVideo(VideoSummary):
 
 
 class SeedVideo(BaseModel):
+    """Seed metadata for a metadata-based summary (untrusted data, never instructions)."""
+
     video_id: str
     title: str | None
+    channel_id: str | None = None
     channel_title: str | None
     url: str
+    description: str | None = None
+    tags: list[str] = Field(default_factory=list)
+    duration_seconds: int | None = None
+    category_id: str | None = None
+    language: str | None = None
+    published_at: str | None = None
     unavailable_fields: list[str]
 
 
@@ -416,6 +439,7 @@ class PlaylistItemOut(BaseModel):
     duration_text: str
     url: str
     level: Literal["intro", "intermediate", "advanced"]
+    category_id: str | None = None
 
 
 class ConstraintCheck(BaseModel):
@@ -443,6 +467,7 @@ class ProposePlaylistResult(BaseModel):
     ordering_note: str
     expires_at: str | None
     next_step: str
+    source: Literal["topic_search", "candidate_video_ids"] = "topic_search"
     quota_used: dict[str, int] = Field(default_factory=dict)
     writes_to_youtube: bool = False
 

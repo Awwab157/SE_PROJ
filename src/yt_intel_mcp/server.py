@@ -280,9 +280,11 @@ def create_server(app: AppContext) -> MCPServer:
         name="propose_playlist",
         annotations=READ_ONLY,
         description=(
-            "Plan (but do NOT create) a playlist on a topic. Input: topic (3-100 chars), total_duration_min, "
-            "max_video_duration_min (<= total), language (ISO 639-1), optional min_video_duration_min, "
-            "privacy (private|unlisted|public, default private). Returns a proposal ID valid for 10 minutes, "
+            "Plan (but do NOT create) a playlist on a topic. Turn the user's natural-language request into these "
+            "constraints. Input: topic (3-100 chars), total_duration_min, max_video_duration_min (<= total), "
+            "language (ISO 639-1), optional min_video_duration_min, privacy (private|unlisted|public, default "
+            "private), optional candidate_video_ids (up to 50 video IDs, e.g. from find_similar_videos, used "
+            "instead of a topic search). Returns a proposal ID valid for 10 minutes, "
             "the videos, total duration, constraint checks, exclusions and estimated write quota. "
             "Writes to YouTube: NO."
         ),
@@ -294,6 +296,7 @@ def create_server(app: AppContext) -> MCPServer:
         language: str,
         min_video_duration_min: float | None = None,
         privacy: str = "private",
+        candidate_video_ids: list[str] | None = None,
     ) -> Annotated[CallToolResult, ProposePlaylistResult]:
         return await _run(
             "propose_playlist",
@@ -307,6 +310,7 @@ def create_server(app: AppContext) -> MCPServer:
                         language=language,
                         min_video_duration_min=min_video_duration_min,
                         privacy=privacy,
+                        candidate_video_ids=candidate_video_ids,
                     ),
                 )
             ),
