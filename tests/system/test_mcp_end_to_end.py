@@ -181,3 +181,18 @@ async def test_video_to_playlist_chain(app, provider) -> None:
         created = (await client.call_tool("create_playlist", {"proposal_id": p["proposal_id"]})).structured_content
     assert created["status"] == "completed"
     assert created["items_inserted"] == len(p["items"])
+
+
+async def test_video_to_playlist_prompt_exposed(app) -> None:
+    """The video-to-playlist Agent Skill is exposed through the server as an MCP prompt."""
+    async with client_for(app) as client:
+        prompts = {p.name: p for p in (await client.list_prompts()).prompts}
+        assert "video-to-playlist" in prompts
+        assert [a.name for a in prompts["video-to-playlist"].arguments] == ["video"]
+        result = await client.get_prompt("video-to-playlist", {"video": "https://youtu.be/pdIntro0001"})
+    text = result.messages[0].content.text
+    assert result.messages[0].role == "user"
+    assert "`pdIntro0001`" in text
+    assert "Never call `create_playlist` until" in text
+    assert "Metadata-based" in text
+    assert not text.startswith("---") and "[[" not in text

@@ -15,8 +15,9 @@ from pathlib import Path
 from typing import Annotated, Any
 
 import anyio
+from mcp import MCPError
 from mcp.server.mcpserver import Context, MCPServer
-from mcp.types import CallToolResult, TextContent, ToolAnnotations
+from mcp.types import INTERNAL_ERROR, INVALID_PARAMS, CallToolResult, TextContent, ToolAnnotations
 from pydantic import BaseModel, ValidationError
 
 from yt_intel_mcp import __version__
@@ -30,8 +31,9 @@ from yt_intel_mcp.approval import (
 from yt_intel_mcp.auth import SCOPE_READ, SCOPE_WRITE, AuthManager, StaticAuthorizer, default_token_store
 from yt_intel_mcp.cache import PURGE_SECONDS, SERVE_SECONDS, Cache, CachingProvider
 from yt_intel_mcp.clock import Clock
-from yt_intel_mcp.config import load_quota_config, load_similarity_config
+from yt_intel_mcp.config import load_quota_config, load_similarity_config, repo_root
 from yt_intel_mcp.errors import ApprovalUnavailable, InternalError, InvalidInput, YTIntelError
+from yt_intel_mcp.ids import parse_video_id
 from yt_intel_mcp.logging_utils import configure_logging, log_event, tool_timer
 from yt_intel_mcp.quota import QuotaConfig, QuotaManager
 from yt_intel_mcp.schemas import (
@@ -71,6 +73,8 @@ subscriptions and playlists).
 * Only create_playlist writes to YouTube. First call propose_playlist and show the proposal to the user.
   create_playlist then asks the user to approve it directly (client dialog or a local approval page).
   Never invent, guess or repeat a confirmation code; only the user can provide it.
+* The prompt video-to-playlist runs the complete workflow from one video (summary, similar videos, proposal,
+  approval, creation, analysis).
 * Summaries of videos are metadata-based, not transcripts or content summaries.
 """
 
@@ -130,6 +134,36 @@ def build_app(
         approval_prompt=approval_prompt,
         provider_mode=mode,
     )
+
+
+# ==================================================================================================
+# Agent Skills exposed as MCP prompts (SKILL.md stays the single source; not tools/resources, FR-8.5)
+# ==================================================================================================
+
+SKILL_PROMPTS = {"video-to-playlist"}
+
+
+def skill_instructions(name: str, skills_dir: Path | None = None) -> str:
+    """Body of ``skills/<name>/SKILL.md`` without YAML frontmatter and the "Related notes" section."""
+    path = (skills_dir or repo_root() / "skills") / name / "SKILL.md"
+    try:
+        text = path.read_text(encoding="utf-8")
+    except OSError as exc:
+        raise InternalError(
+            f"The {name} skill file is not available on this installation.",
+            "Install the server from the project folder (pip install -e .) so the skills/ folder is present.",
+        ) from exc
+    if text.startswith("---"):
+        end = text.find("\n---", 3)
+        text = text[end + 4 :] if end != -1 else text
+    text = text.split("\n## Related notes", 1)[0]
+    return text.strip()
+
+
+def _prompt_error(err: YTIntelError) -> MCPError:
+    """Protocol error with code, cause and next step (MCPError passes through the SDK unchanged)."""
+    code = INVALID_PARAMS if isinstance(err, InvalidInput) else INTERNAL_ERROR
+    return MCPError(code, f"Error ({err.code}): {err.cause} Next step: {err.next_step}", err.to_dict())
 
 
 # ==================================================================================================
@@ -387,6 +421,25 @@ def create_server(app: AppContext) -> MCPServer:
             )
 
         return await _run("clear_cache", _thread(call))
+
+    # --- prompts: Agent Skills (FR-8.5 forbids registering them as tools/resources, not as prompts) ---
+
+    @mcp.prompt(
+        name="video-to-playlist",
+        title="Video to playlist",
+        description=(
+            "Agent Skill: run the complete workflow from one YouTube video: metadata-based summary, similar "
+            "videos, playlist proposal, explicit user approval, creation and a short analysis. Argument: video "
+            "(URL or 11-character ID)."
+        ),
+    )
+    def video_to_playlist(video: str) -> str:
+        try:
+            video_id = parse_video_id(video)
+            body = skill_instructions("video-to-playlist")
+        except YTIntelError as exc:
+            raise _prompt_error(exc) from None
+        return f"{body}\n\n## Run now\nRun this workflow for the YouTube video `{video_id}`."
 
     # --- resources (read-only, never contain secrets or confirmation codes) -------------------------
 

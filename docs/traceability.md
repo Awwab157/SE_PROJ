@@ -40,7 +40,7 @@ Test paths are relative to `tests/`. Notes are in `brain/resources/` unless stat
 | FR-7 | OAuth, PKCE, scopes, refresh, revoke | TBD | TBD | `security/test_security.py::test_authorization_url_*`, `::test_read_only_token_*`, `negative/test_negative.py::test_invalid_grant_*`, `system/test_mcp_end_to_end.py::test_clear_cache_and_revoke` | — | oauth-2-0 |
 | FR-8 | MCP tools + resources | TBD | TBD | `system/test_mcp_end_to_end.py::test_tools_registered_with_write_statement`, `::test_resources` | — | mcp-servers-tools-and-resources |
 | FR-8.3 | Schema validation | TBD | TBD | `unit/test_validation.py`, `negative/test_negative.py::test_errors_are_structured` | — | mcp-servers-tools-and-resources |
-| FR-8.5 | Skills not registered as tools/resources | TBD | TBD | `system/test_mcp_end_to_end.py::test_skills_not_registered` | — | agent-skills-format |
+| FR-8.5 | Skills not registered as tools/resources (exposed as MCP prompts instead) | TBD | TBD | `system/test_mcp_end_to_end.py::test_skills_not_registered`, `::test_video_to_playlist_prompt_exposed` | — | agent-skills-format |
 
 ## Non-functional requirements
 | Req | Summary | Issue | PR | Tests / artifact | Skill | Note |
@@ -60,6 +60,7 @@ Test paths are relative to `tests/`. Notes are in `brain/resources/` unless stat
 | Req | Summary | Issue | PR | Tests / artifact | Skill | Note |
 |---|---|---|---|---|---|---|
 | SK-1 | video-to-playlist | TBD | TBD | `system/test_mcp_end_to_end.py::test_video_to_playlist_chain`, `integration/test_services.py::test_seed_carries_metadata_for_summary`, `::test_propose_from_candidate*`, `scripts/validate_skills.py`; client evaluation pending (`docs/tests/skill-evaluations.md`) | video-to-playlist | playlist-creation |
+| SK-1.1 | video-to-playlist exposed through the server as MCP prompt `video-to-playlist` (project statement §1: "expose tools, resources, and Agent Skills") | TBD | TBD | `system/test_mcp_end_to_end.py::test_video_to_playlist_prompt_exposed`, `negative/test_negative.py::test_skill_prompt_rejects_invalid_video`, `unit/test_skill_prompt.py` | video-to-playlist | agent-skills-format |
 | SK-2 | local-check | TBD | TBD | `scripts/local_check.py` run recorded in skill evaluations | local-check | mcp |
 | SK-3 | brain-ingest | TBD | TBD | 12 research notes created with it; `scripts/validate_brain.py` | brain-ingest | obsidian-para-second-brain |
 | SK-4 | brain-refine | TBD | TBD | validator; evaluation pending | brain-refine | obsidian-para-second-brain |

@@ -19,6 +19,8 @@ All notable changes to this project are documented here. The format follows
 - `propose_playlist` accepts optional `candidate_video_ids` so `video-to-playlist` builds the playlist from the
   similar videos; `find_similar_videos` returns the seed's description, tags, duration, category, language and
   publish date for the metadata-based summary (D-003, D-004).
+- MCP prompt `video-to-playlist` (argument `video`): the Agent Skill is exposed through the server; its text is
+  `skills/video-to-playlist/SKILL.md` (SK-1.1).
 - Redacting logs with per-tool timing; structured errors with cause and next step.
 - Fixture provider and offline test suite (unit, integration, system, negative, security); scheduled live tests.
 - Agent Skills `video-to-playlist`, `local-check`, `brain-ingest`, `brain-refine`, `brain-query`.

@@ -2097,6 +2097,15 @@ Delete all locally cached YouTube responses and account data. Writes to YouTube:
 
 Resources never contain tokens, client secrets, confirmation codes or code hashes.
 
+## Prompts (Agent Skills)
+
+Agent Skills are exposed as MCP prompts. The prompt text is the skill's `skills/<name>/SKILL.md` body;
+skills are not registered as tools or resources (FR-8.5).
+
+| Prompt | Arguments | Description |
+|---|---|---|
+| `video-to-playlist` | `video` (required) | Agent Skill: run the complete workflow from one YouTube video: metadata-based summary, similar videos, playlist proposal, explicit user approval, creation and a short analysis. Argument: video (URL or 11-character ID). |
+
 ## Error codes
 
 | Code | Meaning |

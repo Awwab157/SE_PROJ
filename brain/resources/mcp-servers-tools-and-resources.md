@@ -16,7 +16,7 @@ How the server's surface is shaped: nine tools with JSON Schemas generated from 
 - Results: `structuredContent` + a short human summary + the JSON as text for clients that ignore structured output (UI-1).
 - Errors: `isError: true` with `{code, cause, next_step}`; never tokens or stack traces (UI-3).
 - Resources: `quota://status`, `config://server`, `proposal://{id}` — read-only, no secrets, no confirmation codes.
-- SKILL.md files are not registered as tools or resources (FR-8.5), see [[agent-skills-format]].
+- SKILL.md files are not registered as tools or resources (FR-8.5), see [[agent-skills-format]]. Prompts are the third MCP primitive: user-selected templates; `video-to-playlist` is served as one (SK-1.1).
 
 ## Sources
 - https://modelcontextprotocol.io/specification/2025-06-18/server/tools

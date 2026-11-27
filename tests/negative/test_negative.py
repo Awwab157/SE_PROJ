@@ -175,6 +175,18 @@ def test_1000_like_limit_is_stated(tmp_path, fixture_data, prompt, clock) -> Non
     assert any("1,000" in n for n in eng.data_limits)
 
 
+@pytest.mark.anyio
+async def test_skill_prompt_rejects_invalid_video(app) -> None:
+    from mcp import MCPError
+
+    async with client_for(app) as client:
+        with pytest.raises(MCPError) as info:
+            await client.get_prompt("video-to-playlist", {"video": "not a video"})
+    message = str(info.value)
+    assert "invalid_input" in message and "Next step" in message
+    assert "Traceback" not in message and 'File "' not in message
+
+
 # --- live provider error handling (fake Google service, no network) ------------------------------------
 
 

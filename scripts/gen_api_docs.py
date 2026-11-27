@@ -81,18 +81,19 @@ def quota_costs(app) -> dict[str, str]:
     }
 
 
-async def collect(app) -> tuple[list, list, list]:
+async def collect(app) -> tuple[list, list, list, list]:
     async with Client(create_server(app), mode="legacy") as client:
         tools = (await client.list_tools()).tools
         resources = (await client.list_resources()).resources
         templates = (await client.list_resource_templates()).resource_templates
-    return tools, resources, templates
+        prompts = (await client.list_prompts()).prompts
+    return tools, resources, templates, prompts
 
 
 def main() -> int:
     with tempfile.TemporaryDirectory() as tmp:
         app = build_app(state_dir=Path(tmp), provider_mode="fixture", approval_prompt=RecordingApprovalPrompt())
-        tools, resources, templates = anyio.run(collect, app)
+        tools, resources, templates, prompts = anyio.run(collect, app)
         costs = quota_costs(app)
     lines = [
         "# API reference",
@@ -160,6 +161,19 @@ def main() -> int:
     lines += [
         "",
         "Resources never contain tokens, client secrets, confirmation codes or code hashes.",
+        "",
+        "## Prompts (Agent Skills)",
+        "",
+        "Agent Skills are exposed as MCP prompts. The prompt text is the skill's `skills/<name>/SKILL.md` body;",
+        "skills are not registered as tools or resources (FR-8.5).",
+        "",
+        "| Prompt | Arguments | Description |",
+        "|---|---|---|",
+    ]
+    for pr in prompts:
+        args = ", ".join(f"`{a.name}`" + (" (required)" if a.required else "") for a in pr.arguments or [])
+        lines.append(f"| `{pr.name}` | {args} | {pr.description} |")
+    lines += [
         "",
         "## Error codes",
         "",

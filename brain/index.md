@@ -5,7 +5,7 @@ Map of content for the team's second brain (PARA). Start here.
 ## Projects
 - [[yt-intel-mcp-release-1]] — release 1.0 of the MCP server
 - Stage reviews: [[stage-review-1-skeleton]] · [[stage-review-2-implementation]] · [[stage-review-3-skills-and-docs]]
-- AI sessions: [[ai-session-2026-11-26-initial-build]] · [[ai-session-2026-11-27-video-to-playlist-gaps]]
+- AI sessions: [[ai-session-2026-11-26-initial-build]] · [[ai-session-2026-11-27-video-to-playlist-gaps]] · [[ai-session-2026-11-27-skill-prompt]]
 
 ## Areas
 - [[youtube-api-compliance]] — ongoing: API terms, quota, privacy

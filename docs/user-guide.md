@@ -102,7 +102,9 @@ consent page (read-only access). Approve it and return to the client.
 - "Recommend 10 videos under 15 minutes in English" → `recommend_videos`
 - "Analyse my likes, subscriptions and playlists for 2025 compared with 2024" → `analyze_engagement`
 - "Make a 60-minute playlist about sourdough baking, videos at most 20 minutes, English" → `propose_playlist`
-- "Turn this video into a playlist" → the `video-to-playlist` skill (`skills/video-to-playlist/SKILL.md`): it
+- "Turn this video into a playlist" → the `video-to-playlist` skill. The server exposes it as the MCP prompt
+  `video-to-playlist` (argument `video`), so any MCP client can run it from its prompt menu (in Claude Desktop: the
+  "+" / attach menu, then the server's prompts); it is also available as `skills/video-to-playlist/SKILL.md`. It
   summarises the video from its metadata, finds similar videos and proposes a playlist built from *those* videos
   (`propose_playlist` with `candidate_video_ids`)
 - "How much quota is left?" → resource `quota://status`
