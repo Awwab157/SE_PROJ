@@ -6,7 +6,7 @@ Read this before changing anything in this repository (SB-4).
 - **Branches:** `feat/<short-topic>`, `fix/<short-topic>`, `docs/<short-topic>`, `chore/<short-topic>`, `ai/<short-topic>` for AI-generated work. Never commit directly to `main`.
 - **Pull requests:** every change goes through a PR with at least **1 approving review** and green CI (lint, tests, secret scan, skill + brain validators).
 - **AI changes need human review.** A human must read every AI-generated diff before it is merged. The PR description says which parts were AI-generated.
-- **AI session notes:** every significant AI session (new feature, refactor, more than ~100 changed lines) gets a note in `brain/projects/ai-session-<date>-<topic>.md` (type `ai-session`: Goal, What the AI did, Human review, Links), linked from the PR.
+- **AI session notes:** every significant AI session (new feature, refactor, more than ~100 changed lines) gets a note in `brain/projects/ai-session-<date>-<topic>.md` (type `ai-session`: Goal, What the AI did, What worked and what failed, Human review, Links), linked from the PR.
 - Work phase by phase (see `docs/dev-plan.md`). After each phase: run lint + tests, then stop for human review.
 
 ## Hard rules (check on every change)

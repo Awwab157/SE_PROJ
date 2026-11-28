@@ -102,3 +102,43 @@ def test_brain_missing_section_fails(tmp_path) -> None:
 def test_repository_brain_and_skills_are_valid() -> None:
     assert vb.validate_brain(ROOT / "brain") == []
     assert vs.validate_skills(ROOT / "skills", ROOT / "brain") == []
+
+
+STAGE_REVIEW = """---
+title: Stage review
+type: stage-review
+status: done
+---
+# Stage review
+## Summary
+Text.
+## What worked
+- a
+## What did not work
+- b
+## What to change
+- c
+## Open items
+- d
+## Links
+- [[good-note]]
+"""
+
+
+def test_stage_review_requires_sb2_sections(tmp_path) -> None:
+    brain = make_brain(tmp_path)
+    note = brain / "projects" / "stage-review.md"
+    note.write_text(STAGE_REVIEW)
+    assert vb.validate_brain(brain) == []
+    note.write_text(STAGE_REVIEW.replace("## What did not work\n- b\n", ""))
+    assert any("missing section '## What did not work'" in e for e in vb.validate_brain(brain))
+
+
+def test_ai_session_requires_worked_and_failed(tmp_path) -> None:
+    brain = make_brain(tmp_path)
+    note = brain / "projects" / "ai-session-x.md"
+    note.write_text(
+        "---\ntitle: AI session\ntype: ai-session\nstatus: done\n---\n# AI session\n## Goal\nx\n"
+        "## What the AI did\nx\n## Human review\nx\n## Links\n- [[good-note]]\n"
+    )
+    assert any("missing section '## What worked and what failed'" in e for e in vb.validate_brain(brain))

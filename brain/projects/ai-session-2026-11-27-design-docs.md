@@ -20,6 +20,11 @@ first version of local-check), keep `docs/architecture.md` current and produce a
 - Evaluated brain-refine (on a copy of the vault) and brain-query (3 scenarios) and re-ran local-check; evidence in
   `docs/tests/skill-evidence-2026-11-27.md`.
 
+## What worked and what failed
+- Worked: the PDF is generated from the Markdown design, so it cannot drift from it; checking rendered pages found layout problems.
+- Failed: the first component diagram was too wide to read and headings were orphaned; fixed after two rebuilds.
+- Failed: the PDF build depends on two libraries downloaded from a CDN.
+
 ## Human review
 - Read `docs/design.pdf` against the code; confirm the evaluation results before accepting them.
 - Rebuild the PDF after any change to `docs/architecture.md` or `docs/adr/` (needs internet for the two libraries).

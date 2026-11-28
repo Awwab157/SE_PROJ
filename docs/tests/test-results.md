@@ -59,7 +59,8 @@ Local processing stays under 250 ms per workflow; API waiting time dominates. NF
 ## Remote CI and live runs
 | Date | Workflow | Result | Notes |
 |---|---|---|---|
-| (to record) | `ci.yml` on GitHub | **not yet confirmed** | Check the Actions tab for the latest `main` commit and record the result here |
+| 2026-11-27 | `ci.yml` on GitHub, `main` @ `093b0b0` ([run 46051982833](https://github.com/Awwab157/SE_PROJ/actions/runs/46051982833)) | **PASS**, 6/6 jobs | lint clean; 257 passed, 3 deselected on Ubuntu + Windows x Python 3.11 + 3.12; coverage 90.87 % (gate 85 %); skill + brain validators; gitleaks clean |
+| 2026-11-26 to 2026-11-27 | `ci.yml` on every push to `main` (8 runs, `6a03270` to `093b0b0`) | **PASS**, 8/8 | all runs green |
 | (to record) | `live-api.yml` | **not yet run** | Needs secrets `YT_INTEL_LIVE_TOKEN_JSON`, `YT_INTEL_LIVE_VIDEO`, `YT_INTEL_LIVE_CHANNEL` in the `live-api` environment |
 
 Manual live check on 2026-11-27: `scripts/yt.py login` and `similar` worked against the real API on the developer's

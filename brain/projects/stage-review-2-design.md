@@ -21,6 +21,20 @@ Implementation details of the build phases are in [[phase-review-implementation]
 - Agent Skills are served as MCP prompts, not tools or resources (FR-8.5); see [[agent-skills-format]].
 - Decisions are ADRs 0001–0005 (runtime, confirmation, quota, similarity, storage).
 
+## What worked
+- One design source (`docs/architecture.md`) with Mermaid diagrams, rendered to a PDF by a script, keeps the PDF reproducible.
+- Looking at the rendered pages caught an unreadable component diagram and orphaned headings before submission.
+- Evaluating brain-refine on a copy of the vault tested the skill without touching team notes; the validator even caught a mistake made during refinement.
+
+## What did not work
+- The first architecture document had fallen behind the code (no prompt, no candidate-ID path) until it was rewritten.
+- Skill evaluations for brain-refine and brain-query stayed "Pending" from the first build until this stage.
+- The PDF build needs internet access for two rendering libraries.
+
+## What to change
+- Update `docs/architecture.md` and rebuild the PDF in the same PR as any design-relevant code change.
+- Run skill evaluations at the end of every stage (TQ-7), not only before submission.
+
 ## Open items
 - Human check of the design PDF against the code and of the AI-run skill evaluations.
 - Rebuild the PDF after every design or ADR change (needs internet for the two rendering libraries).

@@ -22,6 +22,21 @@ CI now has a coverage gate and keeps JUnit and coverage reports as artifacts; th
 - Coverage gate 85 % on `yt_intel_mcp`; modules that need the network, a browser or a keychain (`providers/live.py`, `approval.py`, `auth.py`) are covered by fake services and the live job instead.
 - Defect rows must name an existing regression test (checked in CI).
 
+## What worked
+- The fixture provider with call recording made every TQ-4 negative case and the "zero API calls when over budget" check (TQ-6) deterministic.
+- Driving the video-to-playlist scenarios through the MCP prompt and tools tests the skill the way a client uses it.
+- A test that reads the defect log keeps TQ-8 honest: a defect without an existing regression test fails CI.
+
+## What did not work
+- Remote CI results and the live-API workflow could not be verified from the development session; they are still unrecorded.
+- Commits carried an AI co-author trailer that listed the assistant as a GitHub contributor; history had to be rewritten and force-pushed.
+- Review notes were first organised by build phase, not by stage, and had to be renamed.
+
+## What to change
+- Record every remote CI run and the weekly live run in `docs/tests/test-results.md`.
+- No AI attribution trailers in commits; the PR template states which parts are AI-generated instead.
+- Write the stage review note as the last task of each stage.
+
 ## Open items
 - Record the first green `ci.yml` run on GitHub (Actions tab) in `docs/tests/test-results.md`.
 - Configure the `live-api` environment secrets and record the first live run.

@@ -22,6 +22,11 @@ security and API constraints) and fix what is missing.
   integration, system chain).
 - No secrets, tokens or personal data used; no live API calls.
 
+## What worked and what failed
+- Worked: auditing the code against the project statement found two real skill gaps (D-003, D-004); existing tests made the planner refactor safe.
+- Failed: the first audit missed that Agent Skills must be exposed through the server (fixed in [[ai-session-2026-11-27-skill-prompt]]).
+- Failed: shell heredocs with non-ASCII text broke the edit scripts; file-based scripts were needed.
+
 ## Human review
 - Review `services/playlist.py` (`propose_playlist` split into `search_candidates`) and `schemas.py`.
 - Still open, outside code: live API workflow secrets and first scheduled run, CI on GitHub, Claude Desktop demo,

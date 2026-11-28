@@ -18,6 +18,10 @@ only as SKILL.md files, and FR-8.5 forbids registering them as tools or resource
 - Tests: system (listed and rendered), negative (invalid video), unit (stripping, missing file).
 - Docs: traceability SK-1.1 and FR-8.5, API reference prompts section, user guide, research notes, changelog.
 
+## What worked and what failed
+- Worked: serving the skill as an MCP prompt satisfied "expose Agent Skills" without breaking FR-8.5; SKILL.md stays the single source.
+- Failed: the SDK replaced the prompt's error message with a generic one until the error was raised as `MCPError`.
+
 ## Human review
 - Check that exposing a prompt is an acceptable reading of FR-8.5 (it names tools and resources only).
 - Try the prompt in Claude Desktop and record it in `docs/tests/skill-evaluations.md`.
