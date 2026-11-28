@@ -19,6 +19,11 @@ video-to-playlist skill with test results, a defect log with regression tests an
 - CI: `pytest-cov`, coverage gate 85 %, JUnit + coverage artifacts; live workflow keeps its JUnit report.
 - Aligned review notes with the course stages (see [[stage-review-3-testing-ci]]).
 
+## What worked and what failed
+- Worked: scenario tests through the MCP prompt, the defect-log check and the coverage gate (90.87 %, gate 85 %).
+- Failed: the GitHub Actions and live-API results could not be checked from the session.
+- Failed: commits carried an AI co-author trailer that made the assistant a GitHub contributor; the history was rewritten on 2026-11-28.
+
 ## Human review
 - Check the plan's criteria, the coverage gate and the renamed review notes.
 - Record the first remote CI run and the first live run in `docs/tests/test-results.md`.

@@ -21,8 +21,10 @@ REQUIRED_SECTIONS: dict[str, list[str]] = {
     "research": ["Summary", "Key points", "Sources", "Requirements", "Links"],
     "project": ["Summary", "Links"],
     "area": ["Summary", "Links"],
-    "stage-review": ["Summary", "Decisions", "Open items", "Links"],
-    "ai-session": ["Goal", "What the AI did", "Human review", "Links"],
+    # SB-2: what worked, what did not, what to change.
+    "stage-review": ["Summary", "What worked", "What did not work", "What to change", "Open items", "Links"],
+    # AI policy: goal, what worked/failed.
+    "ai-session": ["Goal", "What the AI did", "What worked and what failed", "Human review", "Links"],
 }
 EXEMPT = {"index.md", "log.md"}
 REQ_ID = re.compile(r"\b(FR|NFR|SK|TQ|SE|SB|UI|BR|TBD)-\d+(\.\d+)?\b")
